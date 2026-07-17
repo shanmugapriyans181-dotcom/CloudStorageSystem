@@ -1,0 +1,43 @@
+# Node/Frontend
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Java/Backend (Maven)
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# Uploads / Dynamic Data
+backend/uploads/
+
+# IDE / Editor config
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+db.sqlite3
+
+# Logs and outputs
+*.log
+backend/debug_log.txt
+backend/mvn_output.txt
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+
+  # ── MySQL Database ──────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: cloudstorage-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: cloud_storage
+      MYSQL_USER: ${DB_USER:-clouduser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-cloudpassword}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── Spring Boot Backend ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cloudstorage-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/cloud_storage?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-clouduser}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-cloudpassword}
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      JWT_EXPIRATION: 86400000
+      JWT_REFRESH_EXPIRATION: 604800000
+      STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      STORAGE_LOCAL_UPLOAD_DIR: /app/uploads
+      STORAGE_S3_BUCKET_NAME: ${S3_BUCKET:-}
+      STORAGE_S3_REGION: ${AWS_REGION:-us-east-1}
+      ENCRYPTION_SECRET_KEY: ${ENCRYPTION_KEY:-MySuperSecretKey1234567890123456}
+      APP_DEFAULT_STORAGE_QUOTA: 5368709120
+      APP_CORS_ALLOWED_ORIGINS: http://localhost
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-212001299605-t45f4cnh1bgmjavkfbill70iemjkdba2.apps.googleusercontent.com}
+      SPRING_MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME:-}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── React Frontend ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cloudstorage-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  db_data:
+  uploads_data:
