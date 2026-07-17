@@ -95,8 +95,19 @@ cd backend
 # 1. Create the database
 mysql -u root -p < ../database/schema.sql
 
-# 2. Edit src/main/resources/application.yml
-#    Set: spring.datasource.password and spring.mail.*
+# 2. Set environment variables (do NOT write credentials directly in application.yml)
+#    You can define these in your shell, IDE configuration, or pass them inline:
+#      On Linux/macOS:
+#        MAIL_USERNAME="your_email@gmail.com" MAIL_PASSWORD="your_app_password" mvn spring-boot:run
+#      On Windows (PowerShell):
+#        $env:MAIL_USERNAME="your_email@gmail.com"; $env:MAIL_PASSWORD="your_app_password"; mvn spring-boot:run
+#
+#    Available variables with their defaults:
+#      - MAIL_HOST (default: smtp.gmail.com)
+#      - MAIL_USERNAME / MAIL_PASSWORD (no defaults, required for email notifications)
+#      - DB_USER (default: root) / DB_PASSWORD (default: admin)
+#      - JWT_SECRET (default: development placeholder secret)
+#      - ENCRYPTION_KEY (default: MySuperSecretKey1234567890123456)
 
 # 3. Run
 mvn spring-boot:run

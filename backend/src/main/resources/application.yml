@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_storage?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: admin
+    url: ${SPRING_DATASOURCE_URL:${DB_URL:jdbc:mysql://localhost:3306/cloud_storage?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:root}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:admin}}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: true
@@ -16,30 +16,30 @@ spring:
       hibernate:
         format_sql: true
   mail:
-    host: smtp.gmail.com
-    port: 465
-    username: spcloud369@gmail.com
-    password: wwpo bfsq wxmo erla
-    protocol: smtps
+    host: ${SPRING_MAIL_HOST:${MAIL_HOST:smtp.gmail.com}}
+    port: ${SPRING_MAIL_PORT:${MAIL_PORT:465}}
+    username: ${SPRING_MAIL_USERNAME:${MAIL_USERNAME:}}
+    password: ${SPRING_MAIL_PASSWORD:${MAIL_PASSWORD:}}
+    protocol: ${SPRING_MAIL_PROTOCOL:${MAIL_PROTOCOL:smtps}}
     properties:
       mail:
         smtp:
           auth: true
           ssl:
             enable: true
-            trust: smtp.gmail.com
+            trust: ${SPRING_MAIL_HOST:${MAIL_HOST:smtp.gmail.com}}
         smtps:
           auth: true
           ssl:
             enable: true
-            trust: smtp.gmail.com
+            trust: ${SPRING_MAIL_HOST:${MAIL_HOST:smtp.gmail.com}}
   servlet:
     multipart:
       max-file-size: 500MB
       max-request-size: 500MB
 
 jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
   expiration: 86400000
   refresh-expiration: 604800000
 
@@ -54,7 +54,7 @@ storage:
     secret-key: your-secret-key
 
 encryption:
-  secret-key: MySuperSecretKey1234567890123456
+  secret-key: ${ENCRYPTION_SECRET_KEY:${ENCRYPTION_KEY:MySuperSecretKey1234567890123456}}
 
 app:
   default-storage-quota: 5368709120   # 5 GB in bytes
