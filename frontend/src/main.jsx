@@ -6,6 +6,12 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import App from './App'
 import './index.css'
+import axios from 'axios'
+
+if (import.meta.env.VITE_API_BASE_URL) {
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+}
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
