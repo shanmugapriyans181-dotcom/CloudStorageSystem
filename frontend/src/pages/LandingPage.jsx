@@ -268,7 +268,7 @@ export default function LandingPage() {
 
           {/* HUD Frame */}
           <div 
-            className={`relative w-full aspect-[2.4/1] border border-cyan-500/20 rounded-[36px] bg-slate-950/75 shadow-[0_0_50px_rgba(6,182,212,0.1)] p-6 flex flex-col justify-between overflow-hidden transition-all duration-700 ease-out ${
+            className={`relative w-full aspect-[1.4/1] sm:aspect-[2.4/1] border border-cyan-500/20 rounded-[36px] bg-slate-950/75 shadow-[0_0_50px_rgba(6,182,212,0.1)] p-6 flex flex-col justify-between overflow-hidden transition-all duration-700 ease-out ${
               hudVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'
             }`}
           >
@@ -378,7 +378,7 @@ export default function LandingPage() {
               
               {/* Headline */}
               <ScrollReveal animation="reveal-up" delay={200}>
-                <h1 className="text-5xl md:text-[4.2rem] font-black tracking-tight leading-[1.08]">
+                <h1 className="text-3xl sm:text-5xl md:text-[4.2rem] font-black tracking-tight leading-[1.08]">
                   <span className="text-white">The future of</span><br />
                   <span className="text-white">file storage is </span>
                   <span className="relative inline-block">
@@ -417,17 +417,17 @@ export default function LandingPage() {
 
               {/* Trust signals */}
               <ScrollReveal animation="reveal-up" delay={650}>
-                <div className="flex items-center gap-6 pt-4">
+                <div className="flex flex-wrap items-center gap-y-3 gap-x-6 pt-4">
                   <div className="flex items-center gap-2 text-[11px] text-slate-500 group/trust cursor-default">
                     <HiLockClosed className="text-emerald-400 text-base icon-bounce" />
                     <span className="group-hover/trust:text-slate-300 transition-colors">AES-256 Encrypted</span>
                   </div>
-                  <div className="w-px h-4 bg-white/10" />
+                  <div className="w-px h-4 bg-white/10 hidden sm:block" />
                   <div className="flex items-center gap-2 text-[11px] text-slate-500 group/trust cursor-default">
                     <HiLightningBolt className="text-amber-400 text-base icon-bounce" style={{ animationDelay: '0.3s' }} />
                     <span className="group-hover/trust:text-slate-300 transition-colors">Instant AI Processing</span>
                   </div>
-                  <div className="w-px h-4 bg-white/10" />
+                  <div className="w-px h-4 bg-white/10 hidden sm:block" />
                   <div className="flex items-center gap-2 text-[11px] text-slate-500 group/trust cursor-default">
                     <HiShieldCheck className="text-blue-400 text-base icon-bounce" style={{ animationDelay: '0.6s' }} />
                     <span className="group-hover/trust:text-slate-300 transition-colors">PII Detection</span>
@@ -456,7 +456,7 @@ export default function LandingPage() {
                 <img 
                   src="/isometric_cloud.png" 
                   alt="SmartCloud AI" 
-                  className="w-[300px] md:w-[360px] h-auto object-contain transition-transform duration-700 hover:scale-105 drop-shadow-[0_20px_50px_rgba(168,85,247,0.2)] relative z-10 animate-hero-float" 
+                  className="w-[240px] sm:w-[300px] md:w-[360px] h-auto object-contain transition-transform duration-700 hover:scale-105 drop-shadow-[0_20px_50px_rgba(168,85,247,0.2)] relative z-10 animate-hero-float" 
                 />
               </ScrollReveal>
             </div>
