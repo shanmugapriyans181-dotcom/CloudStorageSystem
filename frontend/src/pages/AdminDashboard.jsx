@@ -917,7 +917,7 @@ export default function AdminDashboard() {
               </button>
             </form>
 
-            <div className="bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+            <div className="bg-slate-900/40 border border-slate-800 rounded-3xl overflow-x-auto shadow-xl">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-800 text-[10px] text-slate-500 font-bold uppercase tracking-wider bg-slate-950/40">

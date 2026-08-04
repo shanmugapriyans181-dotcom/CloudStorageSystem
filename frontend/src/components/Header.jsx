@@ -51,11 +51,12 @@ export default function Header({ onMenuClick }) {
         {/* Upgrade Plan button */}
         <button
           onClick={() => navigate('/upgrade')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-500/30 hover:border-purple-500/60 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-all duration-300 font-semibold text-xs md:text-sm shrink-0"
+          className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-lg border border-purple-500/30 hover:border-purple-500/60 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-all duration-300 font-semibold text-xs md:text-sm shrink-0"
+          title="Upgrade Plan"
         >
           <HiStar className="text-sm text-yellow-500 fill-yellow-500 animate-pulse" />
-          <span>Upgrade Plan</span>
-          <HiChevronDown className="text-xs text-purple-500" />
+          <span className="hidden sm:inline">Upgrade Plan</span>
+          <HiChevronDown className="text-xs text-purple-500 hidden sm:inline" />
         </button>
 
         {/* Dark mode toggle */}

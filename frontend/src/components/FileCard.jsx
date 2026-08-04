@@ -100,7 +100,7 @@ export default function FileCard({ file, viewMode = 'grid', onShare, onPreview, 
           <p className="text-xs text-gray-400">{format(new Date(file.updatedAt), 'MMM d, yyyy')}</p>
         </div>
         <span className="text-xs text-gray-400 hidden sm:block">{formatBytes(file.fileSize)}</span>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           {!isTrash && (
             <>
               <button onClick={handleDownload} className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="Download">
@@ -174,7 +174,7 @@ export default function FileCard({ file, viewMode = 'grid', onShare, onPreview, 
       <div className="absolute top-2 right-2">
         <button
           onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen) }}
-          className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-gray-600"
+          className="p-1 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-gray-600"
         >
           <HiDotsVertical className="text-gray-500" />
         </button>
