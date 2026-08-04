@@ -118,6 +118,9 @@ public class AdminController {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.setIsActive(!user.getIsActive());
+        if (!user.getIsActive()) {
+            user.setIsOnline(false);
+        }
         userRepository.save(user);
         return ResponseEntity.ok(ApiResponse.success("User status updated", UserDto.from(user)));
     }

@@ -30,8 +30,9 @@ public class UserDto {
     private String provider;
 
     public static UserDto from(User user) {
-        // Consider online if heartbeat received within last 2 minutes
-        boolean online = user.getLastHeartbeat() != null
+        // Consider online if active and heartbeat received within last 2 minutes
+        boolean online = Boolean.TRUE.equals(user.getIsActive())
+                && user.getLastHeartbeat() != null
                 && user.getLastHeartbeat().isAfter(LocalDateTime.now().minusMinutes(2));
         return UserDto.builder()
                 .id(user.getId())

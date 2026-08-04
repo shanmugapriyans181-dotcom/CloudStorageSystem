@@ -191,7 +191,7 @@ public class AuthService {
             });
 
             if (!user.getIsActive()) {
-                throw new BadRequestException("User account is blocked by administrator");
+                throw new BadRequestException("User account has been suspended by the administrator");
             }
 
             user.setLastLogin(LocalDateTime.now());
@@ -211,6 +211,8 @@ public class AuthService {
                     .refreshToken(refreshToken)
                     .user(UserDto.from(user))
                     .build();
+        } catch (BadRequestException e) {
+            throw e;
         } catch (Exception e) {
             throw new BadRequestException("Google token verification failed: " + e.getMessage());
         }

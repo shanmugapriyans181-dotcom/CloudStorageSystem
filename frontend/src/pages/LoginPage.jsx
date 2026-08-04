@@ -30,6 +30,16 @@ export default function LoginPage() {
       })
   }, [])
 
+  // Detect if redirected due to suspension error
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('error') === 'suspended') {
+      toast.error('Your account has been suspended by the administrator.')
+      // Clear the query parameter so refreshing doesn't show the toast again
+      window.history.replaceState({}, document.title, window.location.pathname)
+    }
+  }, [])
+
   // 2. Load Google Identity Services SDK script dynamically
   useEffect(() => {
     if (!googleClientId) return

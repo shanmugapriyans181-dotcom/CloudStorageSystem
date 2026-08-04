@@ -52,7 +52,12 @@ api.interceptors.response.use(
         window.location.href = '/admin'
       } else {
         localStorage.removeItem('cloud-storage-auth')
-        window.location.href = '/login'
+        const message = error.response?.data?.message || ''
+        if (message.toLowerCase().includes('suspended') || message.toLowerCase().includes('blocked')) {
+          window.location.href = '/login?error=suspended'
+        } else {
+          window.location.href = '/login'
+        }
       }
     } else if (error.response && error.response.status !== 404) {
       const msg = error.response.data?.message || 'Something went wrong'
