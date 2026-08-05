@@ -75,6 +75,17 @@ public class GlobalExceptionHandler {
                         .success(false).message("Validation failed").data(errors).build());
     }
 
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMethodNotSupported(
+            org.springframework.web.HttpRequestMethodNotSupportedException ex,
+            jakarta.servlet.http.HttpServletRequest request) {
+        log.warn("HTTP Method '{}' not supported for URI: {}. Supported methods: {}", 
+                request.getMethod(), request.getRequestURI(), ex.getSupportedHttpMethods());
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(ApiResponse.error(String.format("Method '%s' not supported for this endpoint. Supported methods: %s",
+                        ex.getMethod(), ex.getSupportedHttpMethods())));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneral(Exception ex) {
         log.error("Unexpected error: ", ex);

@@ -60,7 +60,7 @@ app:
   default-storage-quota: 5368709120   # 5 GB in bytes
   google-client-id: ${GOOGLE_CLIENT_ID:212001299605-t45f4cnh1bgmjavkfbill70iemjkdba2.apps.googleusercontent.com}
   cors:
-    allowed-origins: http://localhost:3000,http://localhost:5173
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,https://cloud-storage-system-chi.vercel.app,https://cloudstoragesystem-k6ul.onrender.com}
   ai:
     gemini:
       api-key: ${GEMINI_API_KEY:}

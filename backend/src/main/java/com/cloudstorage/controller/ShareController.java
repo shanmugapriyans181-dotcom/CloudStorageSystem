@@ -59,7 +59,7 @@ public class ShareController {
         return ResponseEntity.ok(ApiResponse.success(file));
     }
 
-    @GetMapping("/shared/download/{token}")
+    @GetMapping({"/shared/download/{token}", "/shared/public/{token}/download"})
     public ResponseEntity<InputStreamResource> downloadSharedFile(
             @PathVariable String token,
             @AuthenticationPrincipal UserDetails userDetails) throws Exception {

@@ -55,8 +55,8 @@ function useOnlineStatus() {
 
   useEffect(() => {
     const handleOnline = () => {
-      // Double check internet access with a quick head request to API
-      fetch('/api/users/me', { method: 'HEAD' })
+      // Double check internet access with a quick head request to a public API endpoint
+      fetch('/api/auth/google/client-id', { method: 'HEAD' })
         .then(() => setIsOnline(true))
         .catch(() => setIsOnline(false))
     }
@@ -67,7 +67,7 @@ function useOnlineStatus() {
 
     const interval = setInterval(() => {
       if (navigator.onLine) {
-        fetch('/api/users/me', { method: 'HEAD' })
+        fetch('/api/auth/google/client-id', { method: 'HEAD' })
           .then(() => setIsOnline(true))
           .catch(() => setIsOnline(false))
       } else {

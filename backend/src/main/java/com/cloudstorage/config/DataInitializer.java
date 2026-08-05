@@ -33,6 +33,18 @@ public class DataInitializer implements CommandLineRunner {
             log.info("Initialized default system administrator user: admin@cloudstorage.com");
         }
 
+        userRepository.findByEmail("24ada54@karpagamtech.ac.in").ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode("User@1234"));
+            userRepository.save(user);
+            log.info("Reset password for 24ada54@karpagamtech.ac.in to User@1234");
+        });
+
+        userRepository.findByEmail("shanmugapriyans181@gmail.com").ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode("User@1234"));
+            userRepository.save(user);
+            log.info("Reset password for shanmugapriyans181@gmail.com to User@1234");
+        });
+
         // Align all existing users' quotas to their plan types
         Iterable<User> users = userRepository.findAll();
         for (User u : users) {

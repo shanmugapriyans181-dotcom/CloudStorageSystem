@@ -9,7 +9,7 @@ import {
   HiCloud, HiFolder, HiSparkles, HiShieldCheck, 
   HiClipboardList, HiOutlineArrowRight,
   HiLightningBolt, HiLockClosed, HiSearchCircle,
-  HiMail, HiPhone, HiChevronDown
+  HiMail, HiPhone, HiChevronDown, HiMenu, HiX
 } from 'react-icons/hi'
 
 /* ═══════════════════════════════════════════════════════════
@@ -20,6 +20,10 @@ function useScrollReveal(options = {}) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !window.IntersectionObserver) {
+      setIsVisible(true)
+      return
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -27,7 +31,7 @@ function useScrollReveal(options = {}) {
           observer.disconnect()
         }
       },
-      { threshold: options.threshold || 0.15, rootMargin: options.rootMargin || '0px' }
+      { threshold: options.threshold || 0.02, rootMargin: options.rootMargin || '0px' }
     )
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
@@ -170,6 +174,9 @@ export default function LandingPage() {
   // FAQ state
   const [activeFaq, setActiveFaq] = useState(null)
 
+  // Mobile Menu state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   // Auto-redirect to dashboard if user is already logged in
   useEffect(() => {
     if (isAuthenticated) {
@@ -268,7 +275,7 @@ export default function LandingPage() {
 
           {/* HUD Frame */}
           <div 
-            className={`relative w-full aspect-[1.4/1] sm:aspect-[2.4/1] border border-cyan-500/20 rounded-[36px] bg-slate-950/75 shadow-[0_0_50px_rgba(6,182,212,0.1)] p-6 flex flex-col justify-between overflow-hidden transition-all duration-700 ease-out ${
+            className={`relative w-full min-h-[260px] sm:min-h-0 sm:aspect-[2.4/1] border border-cyan-500/20 rounded-[36px] bg-slate-950/75 shadow-[0_0_50px_rgba(6,182,212,0.1)] p-5 sm:p-6 flex flex-col justify-between overflow-hidden transition-all duration-700 ease-out ${
               hudVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'
             }`}
           >
@@ -277,12 +284,13 @@ export default function LandingPage() {
             <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-cyan-500/40 rounded-bl-[30px] pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-cyan-500/40 rounded-br-[30px] pointer-events-none" />
 
-            <div className="flex justify-between items-center text-[8px] font-mono tracking-widest text-cyan-400">
+            <div className="flex flex-col sm:flex-row gap-1 sm:gap-4 justify-between items-start sm:items-center text-[8px] font-mono tracking-widest text-cyan-400">
               <span>SECURE CORES: SYNCING</span>
-              <span className="animate-pulse text-pink-500 font-bold">INITIALIZING CORE STORAGE DATABASE...</span>
+              <span className="animate-pulse text-pink-500 font-bold hidden sm:inline">INITIALIZING CORE STORAGE DATABASE...</span>
+              <span className="animate-pulse text-pink-500 font-bold inline sm:hidden">SYS_DB: INITIALIZING...</span>
             </div>
 
-            <div className="space-y-3.5 text-center">
+            <div className="space-y-3.5 text-center my-4 sm:my-0">
               <div className="w-full bg-slate-900 border border-cyan-500/15 rounded-full h-3 p-0.5 overflow-hidden">
                 <div 
                   className="h-full rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 transition-all duration-100 shadow-[0_0_8px_rgba(6,182,212,0.5)]"
@@ -294,15 +302,17 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="flex justify-between items-end">
-              <div className="flex gap-[3px] items-end h-3">
-                <span className="w-[1.5px] bg-cyan-400 h-1.5 animate-[pulse_0.8s_infinite]" />
-                <span className="w-[1.5px] bg-cyan-400 h-3 animate-[pulse_0.5s_infinite]" />
-                <span className="w-[1.5px] bg-cyan-400 h-1 animate-[pulse_0.9s_infinite]" />
-                <span className="w-[1.5px] bg-cyan-400 h-2 animate-[pulse_0.6s_infinite]" />
+            <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-end gap-2 sm:gap-4">
+              <div className="flex justify-between items-center w-full sm:w-auto sm:justify-start gap-4">
+                <div className="flex gap-[3px] items-end h-3">
+                  <span className="w-[1.5px] bg-cyan-400 h-1.5 animate-[pulse_0.8s_infinite]" />
+                  <span className="w-[1.5px] bg-cyan-400 h-3 animate-[pulse_0.5s_infinite]" />
+                  <span className="w-[1.5px] bg-cyan-400 h-1 animate-[pulse_0.9s_infinite]" />
+                  <span className="w-[1.5px] bg-cyan-400 h-2 animate-[pulse_0.6s_infinite]" />
+                </div>
+                <div className="text-[10px] font-black text-white/30 tracking-wider font-mono">[ SYS_CONNECT ]</div>
               </div>
-              <div className="text-[10px] font-black text-white/30 tracking-wider font-mono">[ SYS_CONNECT ]</div>
-              <div className="text-[8px] font-mono text-slate-500 text-right">VERIFYING HANDSHAKE...</div>
+              <div className="text-[8px] font-mono text-slate-500 text-left sm:text-right w-full sm:w-auto">VERIFYING HANDSHAKE...</div>
             </div>
           </div>
         </div>
@@ -312,11 +322,11 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/[0.04]">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25">
+          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/25 shrink-0">
               <HiCloud className="text-2xl" />
             </div>
-            <span className="font-extrabold text-xl tracking-tight text-white">
+            <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white whitespace-nowrap">
               SmartCloud <span className="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent font-bold">AI</span>
             </span>
           </div>
@@ -328,8 +338,8 @@ export default function LandingPage() {
             <button onClick={() => scrollToSection('faq')} className="hover:text-white transition-colors duration-200">FAQ</button>
           </nav>
 
-          {/* Right side */}
-          <div className="flex items-center gap-4">
+          {/* Right side - Desktop */}
+          <div className="hidden md:flex items-center gap-4">
             <Link to="/login" className="text-[11px] font-bold uppercase tracking-wider text-slate-400 hover:text-white transition-colors duration-200">
               Sign In
             </Link>
@@ -399,16 +409,16 @@ export default function LandingPage() {
 
               {/* CTA Buttons */}
               <ScrollReveal animation="reveal-up" delay={500}>
-                <div className="flex flex-wrap gap-4 pt-2">
+                <div className="flex flex-wrap gap-3 sm:gap-4 pt-2">
                   <Link 
                     to="/register" 
-                    className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 text-white font-bold text-sm uppercase tracking-wider shadow-2xl shadow-purple-600/25 active:scale-[0.97] transition-all duration-300 flex items-center gap-3 hover:shadow-purple-500/35 hover:gap-4"
+                    className="group px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 text-white font-bold text-xs sm:text-sm uppercase tracking-wider shadow-2xl shadow-purple-600/25 active:scale-[0.97] transition-all duration-300 flex items-center gap-2.5 sm:gap-3 hover:shadow-purple-500/35 hover:gap-4 w-full sm:w-auto justify-center"
                   >
-                    Start Free <HiOutlineArrowRight className="text-lg transition-all duration-300 group-hover:translate-x-1" />
+                    Start Free <HiOutlineArrowRight className="text-base sm:text-lg transition-all duration-300 group-hover:translate-x-1" />
                   </Link>
                   <button 
                     onClick={() => scrollToSection('features')}
-                    className="px-8 py-4 rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300"
+                    className="px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 w-full sm:w-auto justify-center"
                   >
                     Explore Features
                   </button>
@@ -588,7 +598,7 @@ export default function LandingPage() {
 
       {/* ═══ METRICS BANNER ═══ */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
           {[
             { value: 99, suffix: '.9%', icon: HiLockClosed, iconColor: 'text-emerald-400', glowColor: 'rgba(52,211,153,0.15)', label: 'Encrypted Storage', sublabel: 'AES-256 Standard' },
             { value: 2, suffix: '.5s', prefix: '< ', icon: HiLightningBolt, iconColor: 'text-amber-400', glowColor: 'rgba(251,191,36,0.15)', label: 'AI Processing', sublabel: 'Average Speed' },
@@ -703,10 +713,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
           
           {/* Left - Animated */}
-          <ScrollReveal animation="reveal-left" delay={100}>
-            <div className="space-y-3 group/footer-logo">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-650 to-indigo-650 flex items-center justify-center text-white shadow-md shadow-purple-600/15 group-hover/footer-logo:scale-115 group-hover/footer-logo:rotate-6 transition-all duration-300 icon-pulse-glow">
+          <ScrollReveal animation="reveal-left" delay={100} className="w-full md:w-auto">
+            <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-3 group/footer-logo">
+              <div className="flex items-center gap-2.5 justify-center md:justify-start">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-650 to-indigo-650 flex items-center justify-center text-white shadow-md shadow-purple-600/15 group-hover/footer-logo:scale-115 group-hover/footer-logo:rotate-6 transition-all duration-300 icon-pulse-glow shrink-0">
                   <HiCloud className="text-xl group-hover/footer-logo:animate-[iconWiggle_0.5s_ease-in-out]" />
                 </div>
                 <span className="font-bold text-sm text-white group-hover/footer-logo:text-purple-300 transition-colors duration-300 font-mono tracking-wide">SmartCloud AI</span>
@@ -748,18 +758,18 @@ export default function LandingPage() {
           </ScrollReveal>
 
           {/* Right - Animated */}
-          <ScrollReveal animation="reveal-right" delay={150}>
-            <div className="space-y-2.5 text-xs text-slate-400">
+          <ScrollReveal animation="reveal-right" delay={150} className="w-full md:w-auto">
+            <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2.5 text-xs text-slate-400">
               <p className="font-bold text-slate-500 uppercase tracking-widest text-[9px] cursor-default">System Administrator</p>
               <p className="font-bold text-white text-sm hover:text-purple-400 transition-colors duration-300 cursor-default">Shanmugapriyan S</p>
-              <div className="flex items-center gap-2 pt-1 group/item">
-                <HiMail className="text-purple-400 text-base group-hover/item:animate-bounce transition-all" />
-                <a href="mailto:shanmugapriyans181@gmail.com" className="hover:text-white hover:underline transition-all duration-250">
+              <div className="flex items-center gap-2 pt-1 group/item justify-center md:justify-start">
+                <HiMail className="text-purple-400 text-base group-hover/item:animate-bounce transition-all shrink-0" />
+                <a href="mailto:shanmugapriyans181@gmail.com" className="hover:text-white hover:underline transition-all duration-250 break-all sm:break-normal">
                   shanmugapriyans181@gmail.com
                 </a>
               </div>
-              <div className="flex items-center gap-2 group/item">
-                <HiPhone className="text-purple-400 text-base group-hover/item:animate-[iconWiggle_0.5s_ease-in-out] transition-all" />
+              <div className="flex items-center gap-2 group/item justify-center md:justify-start">
+                <HiPhone className="text-purple-400 text-base group-hover/item:animate-[iconWiggle_0.5s_ease-in-out] transition-all shrink-0" />
                 <a href="tel:+919994642400" className="hover:text-white hover:underline transition-all duration-250">
                   +91 9994642400
                 </a>
