@@ -8,12 +8,14 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:${DB_PASSWORD:admin}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: true
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   mail:
     host: ${SPRING_MAIL_HOST:${MAIL_HOST:smtp.gmail.com}}
