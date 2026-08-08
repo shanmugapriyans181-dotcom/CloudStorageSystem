@@ -79,11 +79,15 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
-            .addFilterBefore(new org.springframework.web.filter.CorsFilter(corsConfigurationSource()), org.springframework.security.web.access.channel.ChannelProcessingFilter.class)
-            .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public org.springframework.web.filter.CorsFilter corsFilter() {
+        return new org.springframework.web.filter.CorsFilter(corsConfigurationSource());
     }
 
     @Bean
