@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:${DB_URL:jdbc:mysql://localhost:3306/cloud_storage?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}}
-    username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:root}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:admin}}
+    url: ${SPRING_DATASOURCE_URL:${MYSQL_URL:${DB_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:cloud_storage}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}}}
+    username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:${DB_USER:root}}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:${DB_PASSWORD:admin}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: true
