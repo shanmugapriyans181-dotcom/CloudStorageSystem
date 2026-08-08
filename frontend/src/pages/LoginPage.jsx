@@ -17,16 +17,21 @@ export default function LoginPage() {
   const [googleClientId, setGoogleClientId] = useState('')
   const [gsiLoaded, setGsiLoaded] = useState(false)
 
-  // 1. Fetch Google Client ID from backend configurations on load
+  const DEFAULT_GOOGLE_CLIENT_ID = '212001299605-t45f4cnh1bgmjavkfbill70iemjkdba2.apps.googleusercontent.com'
+
+  // 1. Fetch Google Client ID from backend configurations on load with fallback
   useEffect(() => {
     authApi.getGoogleClientId()
       .then(res => {
         if (res.data.success && res.data.data.googleClientId) {
           setGoogleClientId(res.data.data.googleClientId)
+        } else {
+          setGoogleClientId(DEFAULT_GOOGLE_CLIENT_ID)
         }
       })
       .catch(err => {
-        console.warn('Could not retrieve Google Client ID from backend config', err)
+        console.warn('Could not retrieve Google Client ID from backend config, using fallback', err)
+        setGoogleClientId(DEFAULT_GOOGLE_CLIENT_ID)
       })
   }, [])
 
