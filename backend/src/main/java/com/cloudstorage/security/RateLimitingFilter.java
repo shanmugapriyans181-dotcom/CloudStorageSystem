@@ -59,8 +59,8 @@ public class RateLimitingFilter implements Filter {
         String ip = getClientIp(httpRequest);
         String path = httpRequest.getRequestURI();
 
-        // Admin paths do not undergo rate-limiting to support fast dashboard auto-refreshes
-        if (path.startsWith("/api/admin")) {
+        // Bypass preflight OPTIONS requests and admin paths
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod()) || path.startsWith("/api/admin")) {
             chain.doFilter(request, response);
             return;
         }
