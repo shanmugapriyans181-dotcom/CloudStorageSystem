@@ -9,8 +9,10 @@ RUN mvn clean package -DskipTests -q
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Install native Tesseract OCR dependencies for Linux runtime
-RUN apt-get update && apt-get install -y tesseract-ocr && rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install native Tesseract OCR dependencies for Linux runtime non-interactively
+RUN apt-get update && apt-get install -y --no-install-recommends tesseract-ocr && rm -rf /var/lib/apt/lists/*
 
 # Create uploads directory
 RUN mkdir -p /app/uploads
