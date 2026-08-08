@@ -113,7 +113,9 @@ export default function LoginPage() {
         navigate('/dashboard')
       }
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Google verification failed. Access Denied.')
+      const serverMsg = err?.response?.data?.message || err?.message || 'Google verification failed. Access Denied.'
+      console.error('Google Sign-In Error:', err)
+      toast.error(serverMsg)
     } finally {
       setLoading(false)
     }

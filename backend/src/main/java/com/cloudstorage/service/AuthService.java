@@ -214,9 +214,13 @@ public class AuthService {
                     .refreshToken(refreshToken)
                     .user(UserDto.from(user))
                     .build();
+        } catch (org.springframework.web.client.HttpStatusCodeException e) {
+            log.error("Google tokeninfo API HTTP error {}: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw new BadRequestException("Google token validation failed: " + e.getResponseBodyAsString());
         } catch (BadRequestException e) {
             throw e;
         } catch (Exception e) {
+            log.error("Google token verification error", e);
             throw new BadRequestException("Google token verification failed: " + e.getMessage());
         }
     }
