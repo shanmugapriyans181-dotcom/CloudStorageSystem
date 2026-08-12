@@ -3,10 +3,16 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:${JDBC_DATABASE_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:cloud_storage}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}}
-    username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:${DB_USER:root}}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:${DB_PASSWORD:admin}}}
+    url: ${SPRING_DATASOURCE_URL:${JDBC_DATABASE_URL:jdbc:mysql://${MYSQLHOST:${MYSQL_HOST:${MYSQLPRIVATEHOST:localhost}}}:${MYSQLPORT:${MYSQL_PORT:3306}}/${MYSQLDATABASE:${MYSQL_DATABASE:cloud_storage}}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}}
+    username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:${MYSQL_USER:${DB_USER:root}}}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:${MYSQL_PASSWORD:${DB_PASSWORD:admin}}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      validation-timeout: 5000
+      max-lifetime: 1800000
   jpa:
     open-in-view: true
     hibernate:
