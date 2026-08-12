@@ -268,10 +268,10 @@ export default function DashboardPage() {
         {/* Storage overview */}
         <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-slate-900/40 border border-gray-200 dark:border-white/10 flex flex-col justify-between shadow-sm">
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <div>
                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cloud Storage Space</p>
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
                   {formatBytes(dashboard?.storageUsed ?? 0)}
                   <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-1.5">
                     / {formatBytes(dashboard?.totalStorageQuota ?? 0)}
@@ -283,17 +283,33 @@ export default function DashboardPage() {
               </span>
             </div>
             
-            <div className="w-full bg-slate-100 dark:bg-white/5 rounded-full h-3.5 p-0.5 border border-slate-200 dark:border-white/5">
+            <div className="w-full bg-slate-100 dark:bg-white/5 rounded-full h-3 p-0.5 border border-slate-200 dark:border-white/5 mb-4">
               <div
                 className="h-2 rounded-full transition-all duration-700 shadow-inner"
                 style={{ width: `${pct}%`, backgroundColor: barColor }}
               />
             </div>
+
+            {/* Quick Metrics Breakdown - Fills gap gracefully */}
+            <div className="grid grid-cols-3 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] uppercase font-extrabold text-slate-400 dark:text-slate-500 tracking-wider">Total Quota</p>
+                <p className="text-sm font-extrabold text-slate-800 dark:text-slate-100 mt-0.5">{formatBytes(dashboard?.totalStorageQuota ?? 0)}</p>
+              </div>
+              <div className="text-center sm:text-left border-x border-slate-200/60 dark:border-white/10 px-2">
+                <p className="text-[10px] uppercase font-extrabold text-slate-400 dark:text-slate-500 tracking-wider">Used Space</p>
+                <p className="text-sm font-extrabold text-purple-600 dark:text-purple-400 mt-0.5">{formatBytes(dashboard?.storageUsed ?? 0)}</p>
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] uppercase font-extrabold text-slate-400 dark:text-slate-500 tracking-wider">Available</p>
+                <p className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">{formatBytes(dashboard?.storageAvailable ?? 0)}</p>
+              </div>
+            </div>
           </div>
           
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-4 border-t border-gray-100 dark:border-white/5 pt-4">
-            <span>Available: {formatBytes(dashboard?.storageAvailable ?? 0)}</span>
-            <span className="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold uppercase">Safe & Encrypted</span>
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-3 border-t border-gray-100 dark:border-white/5 pt-3">
+            <span>Available: <strong className="text-slate-700 dark:text-slate-200">{formatBytes(dashboard?.storageAvailable ?? 0)}</strong></span>
+            <span className="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-400 px-2.5 py-0.5 rounded-lg font-bold uppercase">Safe & Encrypted</span>
           </div>
         </div>
 
