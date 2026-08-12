@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final com.cloudstorage.repository.FileRepository fileRepository;
     private final PasswordEncoder passwordEncoder;
 
     @PersistenceContext
@@ -30,8 +31,8 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // Auto-seed database from seed_old_data.sql if missing user records
-        if (userRepository.findByEmail("shanmugapriyans181@gmail.com").isEmpty()) {
+        // Auto-seed database from seed_old_data.sql if missing files in Railway DB
+        if (fileRepository.count() == 0) {
             log.info("Seeding database with old records from seed_old_data.sql...");
             try {
                 ClassPathResource resource = new ClassPathResource("seed_old_data.sql");
