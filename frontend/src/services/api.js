@@ -1,8 +1,16 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
+const getBaseUrl = () => {
+  let url = import.meta.env.VITE_API_BASE_URL || ''
+  if (!url) return '/api'
+  url = url.trim().replace(/\/+$/, '')
+  if (url.endsWith('/api')) return url
+  return `${url}/api`
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api` : '/api',
+  baseURL: getBaseUrl(),
   timeout: 30000
 })
 

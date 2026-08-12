@@ -3,19 +3,17 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:${MYSQL_URL:${DB_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:cloud_storage}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}}}
+    url: ${SPRING_DATASOURCE_URL:${JDBC_DATABASE_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:cloud_storage}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}}
     username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:${DB_USER:root}}}
     password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:${DB_PASSWORD:admin}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: true
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   mail:
     host: ${SPRING_MAIL_HOST:${MAIL_HOST:smtp.gmail.com}}
