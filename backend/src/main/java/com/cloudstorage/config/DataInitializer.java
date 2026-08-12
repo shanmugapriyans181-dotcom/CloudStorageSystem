@@ -2,11 +2,19 @@ package com.cloudstorage.config;
 
 import com.cloudstorage.entity.User;
 import com.cloudstorage.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
@@ -16,8 +24,38 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
+        // Auto-seed database from seed_old_data.sql if missing user records
+        if (userRepository.findByEmail("shanmugapriyans181@gmail.com").isEmpty()) {
+            log.info("Seeding database with old records from seed_old_data.sql...");
+            try {
+                ClassPathResource resource = new ClassPathResource("seed_old_data.sql");
+                if (resource.exists()) {
+                    try (BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            line = line.trim();
+                            if (line.isEmpty() || line.startsWith("--")) continue;
+                            try {
+                                entityManager.createNativeQuery(line).executeUpdate();
+                            } catch (Exception e) {
+                                log.warn("Query seed warning: {}", e.getMessage());
+                            }
+                        }
+                    }
+                    log.info("Successfully seeded database with old local records!");
+                }
+            } catch (Exception e) {
+                log.error("Failed to seed old database records: {}", e.getMessage());
+            }
+        }
+
         if (userRepository.findByEmail("admin@cloudstorage.com").isEmpty()) {
             User admin = User.builder()
                     .username("admin")
